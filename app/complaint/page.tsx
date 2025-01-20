@@ -14,7 +14,7 @@ interface ComplaintForm {
   priority: Priority;
 }
 
-function App() {
+const App = () => {
   const [formData, setFormData] = React.useState<ComplaintForm>({
     title: "",
     description: "",
@@ -191,6 +191,6 @@ function App() {
       </div>
     </div>
   );
-}
+};
 
 export default App;
