@@ -66,6 +66,7 @@ const App = () => {
           priority: "Low",
         });
         setLoading(false);
+        router.push("/thankyou");
       }
     }
   };
