@@ -1,7 +1,16 @@
 "use client";
 
 import React, { useState } from "react";
-import { LogIn, UserPlus, KeyRound, Mail, User, Shield } from "lucide-react";
+import {
+  LogIn,
+  UserPlus,
+  KeyRound,
+  Mail,
+  User,
+  Shield,
+  LockKeyhole,
+} from "lucide-react";
+import toast from "react-hot-toast";
 
 type Role = "User" | "Manager" | "Admin";
 type AuthMode = "login" | "register";
@@ -23,7 +32,7 @@ export default function Home() {
   });
   const [errors, setErrors] = useState<Partial<AuthForm>>({});
 
-  const roles: Role[] = ["User", "Manager", "Admin"];
+  const roles: Role[] = ["User", "Admin"];
 
   const validateForm = (): boolean => {
     const newErrors: Partial<AuthForm> = {};
@@ -54,17 +63,39 @@ export default function Home() {
     e.preventDefault();
 
     if (validateForm()) {
-      // Here you would typically send the data to your backend
-      console.log("Form submitted:", formData);
-      alert(`${mode === "login" ? "Login" : "Registration"} successful!`);
-
-      // Reset form
-      setFormData({
-        email: "",
-        password: "",
-        name: "",
-        role: "User",
-      });
+      if (mode === "login") {
+        const response = await fetch("/api/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+        console.log(response);
+        toast.success("Login successful!");
+        setFormData({
+          email: "",
+          password: "",
+          name: "",
+          role: "User",
+        });
+      } else {
+        const response = await fetch("/api/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+        console.log(response);
+        toast.success("Registration successful!");
+        setFormData({
+          email: "",
+          password: "",
+          name: "",
+          role: "User",
+        });
+      }
     }
   };
 
@@ -212,7 +243,12 @@ export default function Home() {
                       htmlFor={role}
                       className="ml-3 flex items-center text-sm text-gray-700"
                     >
-                      <Shield className="h-4 w-4 mr-2 text-gray-400" />
+                      {role === "Admin" ? (
+                        <LockKeyhole className="h-4 w-4 mr-2 text-gray-400" />
+                      ) : (
+                        <Shield className="h-4 w-4 mr-2 text-gray-400" />
+                      )}
+
                       {role}
                     </label>
                   </div>

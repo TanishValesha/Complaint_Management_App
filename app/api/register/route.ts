@@ -12,6 +12,7 @@ export async function POST(request: Request) {
   const newUser = new User({
     email,
     password: hashedPassword,
+    name: formData.name,
     role: formData.role,
   });
 
