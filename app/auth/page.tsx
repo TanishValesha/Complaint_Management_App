@@ -9,8 +9,10 @@ import {
   User,
   Shield,
   LockKeyhole,
+  Loader2,
 } from "lucide-react";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 type Role = "User" | "Manager" | "Admin";
 type AuthMode = "login" | "register";
@@ -31,6 +33,8 @@ export default function Home() {
     role: "User",
   });
   const [errors, setErrors] = useState<Partial<AuthForm>>({});
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const roles: Role[] = ["User", "Admin"];
 
@@ -60,6 +64,7 @@ export default function Home() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
+    setLoading(true);
     e.preventDefault();
 
     if (validateForm()) {
@@ -79,6 +84,10 @@ export default function Home() {
           name: "",
           role: "User",
         });
+        setLoading(false);
+        if (response.status === 201) {
+          router.push("/complaints");
+        }
       } else {
         const response = await fetch("/api/register", {
           method: "POST",
@@ -95,6 +104,10 @@ export default function Home() {
           name: "",
           role: "User",
         });
+        setLoading(false);
+        if (response.status === 201) {
+          router.push("/complaints");
+        }
       }
     }
   };
@@ -259,15 +272,18 @@ export default function Home() {
 
           <button
             type="submit"
-            className="flex w-full justify-center items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            disabled={loading}
+            className="flex w-full justify-center items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-indigo-300"
           >
             {mode === "login" ? (
               <>
+                {loading && <Loader2 className="animate-spin w-4 h-4 mr-2" />}
                 <LogIn className="w-4 h-4 mr-2" />
                 Sign in
               </>
             ) : (
               <>
+                {loading && <Loader2 className="animate-spin w-4 h-4 mr-2" />}
                 <UserPlus className="w-4 h-4 mr-2" />
                 Register
               </>

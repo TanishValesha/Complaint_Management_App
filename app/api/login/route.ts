@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import User from "@/models/userModel";
 import dbConnect from "@/app/_lib/db";
 import { SignJWT } from "jose";
+import { serialize } from "cookie";
 
 export async function POST(request: Request) {
   await dbConnect();
@@ -23,8 +24,21 @@ export async function POST(request: Request) {
     .setExpirationTime("1h")
     .sign(secret);
 
-  return new Response(JSON.stringify(token), {
+  const response = new Response(JSON.stringify(token), {
     headers: { "Content-Type": "application/json" },
     status: 201,
   });
+
+  response.headers.set(
+    "Set-Cookie",
+    serialize("token", token, {
+      httpOnly: true,
+      secure: false,
+      maxAge: 3600,
+      sameSite: "strict",
+      path: "/",
+    })
+  );
+
+  return response;
 }

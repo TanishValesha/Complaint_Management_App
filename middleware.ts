@@ -9,12 +9,7 @@ declare module "next/server" {
 
 export async function middleware(request: NextRequest) {
   console.log("Middleware Triggered");
-  let token;
-  const requestHeaders = new Headers(request.headers);
-  const authHeader = requestHeaders.get("Authorization");
-  if (authHeader && authHeader.startsWith("Bearer")) {
-    token = authHeader.split(" ")[1];
-  }
+  const token = request.cookies.get("token");
 
   if (!token) {
     return new Response("No token , authorization denied", { status: 401 });
@@ -22,35 +17,26 @@ export async function middleware(request: NextRequest) {
 
   try {
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-    const { payload } = await jwtVerify(token, secret);
+    const { payload } = await jwtVerify(token.value, secret);
     console.log(payload);
     const url = request.nextUrl.pathname;
 
-    if (url.startsWith("/api/complaint") && payload.role !== "admin") {
+    if (url.startsWith("/api/complaints") && request.method !== "POST") {
       return NextResponse.json(
         { message: "Forbidden: Admins only" },
         { status: 403 }
       );
     }
 
-    if (url.startsWith("/api/user") && payload.role !== "seller") {
-      return NextResponse.json(
-        { message: "Forbidden: Sellers only" },
-        { status: 403 }
-      );
-    }
-
-    return NextResponse.next(); // Proceed to the next step
+    return NextResponse.next();
   } catch (error) {
     return NextResponse.json(
       { message: "Invalid or expired token" + "or" + error },
       { status: 401 }
     );
   }
-  // request.user = payload as { id: string; role: string };
-  // return new Response("Token Verified!");
 }
 
 export const config = {
-  matcher: ["/api/admin", "/api/demo"],
+  matcher: ["/api/admin", "/api/complaints"],
 };

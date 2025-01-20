@@ -1,8 +1,9 @@
 "use client";
 
-import React from "react";
-import { AlertCircle, Send } from "lucide-react";
+import React, { useState } from "react";
+import { AlertCircle, Loader2, Send } from "lucide-react";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 type Priority = "Low" | "Medium" | "High";
 type Category = "Product" | "Service" | "Support";
@@ -26,6 +27,8 @@ const App = () => {
 
   const categories: Category[] = ["Product", "Service", "Support"];
   const priorities: Priority[] = ["Low", "Medium", "High"];
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const validateForm = (): boolean => {
     const newErrors: Partial<ComplaintForm> = {};
@@ -41,21 +44,29 @@ const App = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    setLoading(true);
     e.preventDefault();
 
     if (validateForm()) {
-      // Here you would typically send the data to your backend
-      console.log("Form submitted:", formData);
-      toast.success("Complaint submitted successfully!");
-
-      // Reset form
-      setFormData({
-        title: "",
-        description: "",
-        category: "Product",
-        priority: "Low",
+      const response = await fetch("/api/complaints", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
       });
+      if (response.status === 201) {
+        toast.success("Complaint submitted successfully!");
+        setFormData({
+          title: "",
+          description: "",
+          category: "Product",
+          priority: "Low",
+        });
+        setLoading(false);
+      }
     }
   };
 
@@ -182,8 +193,10 @@ const App = () => {
 
           <button
             type="submit"
-            className="flex w-full justify-center items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            disabled={loading}
+            className="flex w-full justify-center items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-indigo-300"
           >
+            {loading && <Loader2 className="w-4 h-4 animate-spin mr-2" />}
             <Send className="w-4 h-4 mr-2" />
             Submit Complaint
           </button>
