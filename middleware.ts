@@ -18,10 +18,13 @@ export async function middleware(request: NextRequest) {
   try {
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
     const { payload } = await jwtVerify(token.value, secret);
-    console.log(payload);
     const url = request.nextUrl.pathname;
 
-    if (url.startsWith("/api/complaints") && request.method !== "POST") {
+    if (
+      url.startsWith("/api/complaints") &&
+      request.method !== "POST" &&
+      payload.role !== "Admin"
+    ) {
       return NextResponse.json(
         { message: "Forbidden: Admins only" },
         { status: 403 }
@@ -38,5 +41,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/api/admin", "/api/complaints"],
+  matcher: ["/api/admin", "/api/complaints", "/api/getCurrentUser"],
 };

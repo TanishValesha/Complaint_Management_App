@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { AlertCircle, Loader2, Send } from "lucide-react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import useUserStore from "@/store";
 
 type Priority = "Low" | "Medium" | "High";
 type Category = "Product" | "Service" | "Support";
@@ -29,6 +30,7 @@ const App = () => {
   const priorities: Priority[] = ["Low", "Medium", "High"];
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const user = useUserStore((state) => state.user);
 
   const validateForm = (): boolean => {
     const newErrors: Partial<ComplaintForm> = {};
@@ -55,7 +57,7 @@ const App = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, user: user?._id }),
       });
       if (response.status === 201) {
         toast.success("Complaint submitted successfully!");

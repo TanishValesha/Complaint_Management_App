@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import useUserStore from "@/store";
 
 type Role = "User" | "Manager" | "Admin";
 type AuthMode = "login" | "register";
@@ -35,6 +36,7 @@ export default function Home() {
   const [errors, setErrors] = useState<Partial<AuthForm>>({});
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const setUser = useUserStore((state) => state.setUser);
 
   const roles: Role[] = ["User", "Admin"];
 
@@ -67,17 +69,16 @@ export default function Home() {
     setLoading(true);
     e.preventDefault();
 
+    let response;
     if (validateForm()) {
       if (mode === "login") {
-        const response = await fetch("/api/login", {
+        response = await fetch("/api/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(formData),
         });
-        console.log(response);
-        toast.success("Login successful!");
         setFormData({
           email: "",
           password: "",
@@ -85,18 +86,14 @@ export default function Home() {
           role: "User",
         });
         setLoading(false);
-        if (response.status === 201) {
-          router.push("/complaints");
-        }
       } else {
-        const response = await fetch("/api/register", {
+        response = await fetch("/api/register", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(formData),
         });
-        console.log(response);
         toast.success("Registration successful!");
         setFormData({
           email: "",
@@ -105,9 +102,18 @@ export default function Home() {
           role: "User",
         });
         setLoading(false);
-        if (response.status === 201) {
-          router.push("/complaints");
-        }
+      }
+    }
+    const currentUser = await fetch(
+      `/api/getCurrentUser/${formData.email}`
+    ).then((res) => res.json());
+    setUser(currentUser);
+
+    if (response?.status === 201) {
+      if (currentUser.role === "Admin") {
+        router.push("/admin");
+      } else {
+        router.push("/complaints");
       }
     }
   };

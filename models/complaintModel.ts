@@ -17,6 +17,15 @@ const complaintSchema = new mongoose.Schema(
       enum: ["Pending", "In Progress", "Resolved"],
     },
     dateSubmitted: { type: Date, default: () => moment().toDate() },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    ownerEmail: {
+      type: String,
+      ref: "User",
+    },
   },
   { timestamps: true }
 );

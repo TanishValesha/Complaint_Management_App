@@ -18,7 +18,6 @@ export async function POST(request: Request) {
 
   const secret = new TextEncoder().encode(process.env.JWT_SECRET);
 
-  // Generate a JWT token using jose
   const token = await new SignJWT({ id: user._id, role: user.role })
     .setProtectedHeader({ alg: "HS256" })
     .setExpirationTime("1h")
