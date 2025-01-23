@@ -76,14 +76,18 @@ As soon as the complaint is submitted by the user, an email is send to the admin
 Currrently, the mail is send by admin to admin itself. We can later maybe create an manager account which will be used to mail the complaints to the admin
 
 Admin Gmail Credentials:
+```bash
 email - owner3005@gmail.com 
 password - admin3005
+```
 
 ### Admin
 
-# admin account credentials:
+Admin account credentials:
+```bash
 email - owner3005@gmail.com
 password - 12345678
+```
 
 /admin -> Admin Dashboard
 Here, admin can update the status of the complaints which are submitted by users.
