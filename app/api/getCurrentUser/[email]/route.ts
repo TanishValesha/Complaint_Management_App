@@ -4,8 +4,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   request: NextRequest,
-  response: NextResponse,
-  { params }: { params: { email: string } }
+  { params }: { params: { email: string } },
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  response: NextResponse
 ) {
   await dbConnect();
 

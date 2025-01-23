@@ -104,9 +104,10 @@ export default function Home() {
         setLoading(false);
       }
     }
-    const currentUser = await fetch(
+    const currentUserResponse = await fetch(
       `/api/getCurrentUser/${formData.email}`
-    ).then((res) => res.json());
+    );
+    const currentUser = await currentUserResponse.json();
     setUser(currentUser);
 
     if (response?.status === 201) {
