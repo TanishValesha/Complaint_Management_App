@@ -12,7 +12,7 @@ export async function POST() {
     );
   } catch (error) {
     return NextResponse.json(
-      { message: "Error logging out", error: error.message },
+      { message: "Error logging out", error: error },
       { status: 500 }
     );
   }
