@@ -32,7 +32,7 @@ Built with the **Next.js** framework, **MongoDB** for data storage, and **NodeMa
 - **Database**: MongoDB (MongoDB Atlas)
 - **Authentication**: JWT (JSON Web Token)
 - **Email**: NodeMailer
-- **State Management**: Zustand, Redux (for different parts of the app)
+- **State Management**: Zustand
 - **Deployment**: Vercel
 
 ---
@@ -52,6 +52,17 @@ Make sure you have Node.js installed. Then, run:
 ```bash
 npm install
 ```
-
+### 3. Configure Environment Variables
+Create a .env.local file in the root directory and add the following environment variables:
+```bash
+MONGODB_URL = mongodb+srv://admin:admin30@cluster0.oeitc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+JWT_SECRET = intern
+ADMIN_EMAIL = owner3005@gmail.com
+ADMIN_PASS = sdwkxzfaparxlner
+```
+### 4. Run the Application Locally
+```bash
+npm run dev
+```
 
 
