@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 interface Complaint {
   _id: string;
@@ -77,22 +78,27 @@ export default function AdminPanel() {
     });
   };
 
-  const handleStatusChange = (id: string, newStatus: string) => {
-    fetch(`/api/complaints/${id}`, {
+  const handleStatusChange = async (id: string, newStatus: string) => {
+    const response = await fetch(`/api/complaints/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ status: newStatus }),
-    }).then(() => {
+    });
+
+    if (response.status === 200) {
       complaints.map((complaint) => {
         if (complaint._id === id) {
-          complaint.status =
-            (newStatus as "Pending") || "In Progress" || "Resolved";
+          complaint.status = newStatus as
+            | "Pending"
+            | "In Progress"
+            | "Resolved";
         }
       });
       fetchComplaints();
-    });
+      toast.success("Complaint status updated successfully");
+    }
   };
 
   const filteredComplaints = complaints

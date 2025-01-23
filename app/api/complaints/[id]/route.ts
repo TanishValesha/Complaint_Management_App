@@ -1,6 +1,7 @@
 import dbConnect from "@/app/_lib/db";
 import { NextRequest, NextResponse } from "next/server";
 import Complaint from "@/models/complaintModel";
+import sendEmail from "@/utils/sendEmail";
 
 export async function GET(
   request: NextRequest,
@@ -60,10 +61,31 @@ export async function PUT(
     complaint.status = status;
     await complaint.save();
 
-    return NextResponse.json({
-      message: "Complaint status updated successfully",
-      complaint,
-    });
+    if (status === "Resolved") {
+      const userEmail = complaint.ownerEmail;
+      const subject = "Your Complaint Has Been Resolved";
+      const html = `
+        <p>Your complaint titled "<strong>${
+          complaint.title
+        }</strong>" has been marked as <strong>Resolved</strong>.</p>
+        <p>Complaint Date of Submission: ${new Date(
+          complaint.dateSubmitted
+        )}</p>
+        <p>Thank you for your patience!</p>
+        <p>Best regards,</p>
+        <p>Admin Team</p>
+      `;
+      await sendEmail(userEmail, subject, html);
+      console.log("Email sent to", userEmail);
+    }
+
+    return NextResponse.json(
+      {
+        message: "Complaint status updated successfully",
+        complaint,
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error updating complaint status:", error);
     return NextResponse.json(
