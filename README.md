@@ -71,8 +71,8 @@ npm run dev
 
 /auth -> For login and register of users
 
-/complaints -> An route for users to submit a complaint
-As soon as the complaint is submitted by the user, an email is send to the admin's gmail regarding the details of the complaint
+/complaints -> An route for users to submit a complaint <br />
+As soon as the complaint is submitted by the user, an email is send to the admin's gmail regarding the details of the complaint <br />
 Currrently, the mail is send by admin to admin itself. We can later maybe create an manager account which will be used to mail the complaints to the admin
 
 Admin Gmail Credentials:
@@ -89,8 +89,8 @@ email - owner3005@gmail.com
 password - 12345678
 ```
 
-/admin -> Admin Dashboard
-Here, admin can update the status of the complaints which are submitted by users.
+/admin -> Admin Dashboard <br />
+Here, admin can update the status of the complaints which are submitted by users. <br />
 Whenever, the admin marks an complaint as "Resolved" a mail is send to user who has submitted that complaint regarding the status of the complaint
 
 
