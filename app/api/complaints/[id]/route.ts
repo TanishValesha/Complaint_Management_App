@@ -3,9 +3,13 @@ import { NextRequest, NextResponse } from "next/server";
 import Complaint from "@/models/complaintModel";
 import sendEmail from "@/utils/sendEmail";
 
+interface Params {
+  id: string;
+}
+
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Params }
 ) {
   await dbConnect();
   const { id } = await params;
@@ -23,7 +27,7 @@ export async function GET(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Params }
 ) {
   await dbConnect();
   const { id } = await params;
@@ -37,10 +41,7 @@ export async function DELETE(
   });
 }
 
-export async function PUT(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(request: Request, { params }: { params: Params }) {
   try {
     await dbConnect();
     const { id } = await params;
