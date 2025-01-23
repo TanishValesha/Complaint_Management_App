@@ -11,10 +11,17 @@ import {
   ArrowUpDown,
   Trash2,
   ListCollapse,
+  BarChart3,
+  Hourglass,
+  CheckCircle2,
+  AlertTriangle,
+  Watch,
+  Clock1,
 } from "lucide-react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import useUserStore from "@/store";
+import StatCard from "../StatCard";
 
 interface Complaint {
   _id: string;
@@ -101,6 +108,18 @@ export default function AdminPanel() {
     }
   };
 
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/logout", {
+        method: "POST",
+      });
+      useUserStore.setState({ user: null });
+      router.push("/auth");
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
+
   const filteredComplaints = complaints
     .filter((complaint) => {
       const matchesSearch =
@@ -138,6 +157,66 @@ export default function AdminPanel() {
     fetchComplaints();
   }, []);
 
+  const stats = {
+    total: complaints.length,
+    inProgress: complaints.filter((c) => c.status === "In Progress").length,
+    resolved: complaints.filter((c) => c.status === "Resolved").length,
+    pending: complaints.filter((c) => c.status === "Pending").length,
+    highPriority: complaints.filter((c) => c.priority === "High").length,
+  };
+
+  const statCards = [
+    {
+      title: "Total Complaints",
+      value: stats.total,
+      icon: BarChart3,
+      iconColor: "text-gray-400",
+      footerText: "All time complaints",
+      footerBgColor: "bg-gray-50",
+      footerTextColor: "text-gray-500",
+    },
+    {
+      title: "In Progress",
+      value: stats.inProgress,
+      total: stats.total,
+      icon: Hourglass,
+      iconColor: "text-yellow-400",
+      footerText: "Being handled",
+      footerBgColor: "bg-yellow-50",
+      footerTextColor: "text-yellow-700",
+    },
+    {
+      title: "Resolved",
+      value: stats.resolved,
+      total: stats.total,
+      icon: CheckCircle2,
+      iconColor: "text-green-400",
+      footerText: "Completed",
+      footerBgColor: "bg-green-50",
+      footerTextColor: "text-green-700",
+    },
+    {
+      title: "High Priority",
+      value: stats.highPriority,
+      total: stats.total,
+      icon: AlertTriangle,
+      iconColor: "text-orange-400",
+      footerText: "Urgent cases",
+      footerBgColor: "bg-orange-50",
+      footerTextColor: "text-orange-700",
+    },
+    {
+      title: "Pending",
+      value: stats.pending,
+      total: stats.total,
+      icon: Clock1,
+      iconColor: "text-indigo-400",
+      footerText: "Pending cases",
+      footerBgColor: "bg-indigo-200",
+      footerTextColor: "text-indigo-700",
+    },
+  ];
+
   const router = useRouter();
 
   return (
@@ -152,19 +231,24 @@ export default function AdminPanel() {
                 Admin Dashboard
               </h1>
             </div>
-            <Link
-              href="/login"
+            <button
               className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"
+              onClick={handleLogout}
             >
               <LogOut className="w-4 h-4 mr-2" />
               Logout
-            </Link>
+            </button>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="mb-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-5">
+          {statCards.map((card, index) => (
+            <StatCard key={index} {...card} />
+          ))}
+        </div>
         {/* Filters */}
         <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <div className="relative">

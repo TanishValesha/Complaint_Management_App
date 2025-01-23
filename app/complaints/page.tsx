@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { AlertCircle, Loader2, Send } from "lucide-react";
+import { AlertCircle, Loader2, LogOut, Send } from "lucide-react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import useUserStore from "@/store";
@@ -70,6 +70,20 @@ const App = () => {
         setLoading(false);
         router.push("/thankyou");
       }
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      setLoading(true);
+      await fetch("/api/logout", {
+        method: "POST",
+      });
+      useUserStore.setState({ user: null });
+      router.push("/auth");
+      setLoading(false);
+    } catch (error) {
+      console.error("Error logging out:", error);
     }
   };
 
@@ -204,6 +218,15 @@ const App = () => {
             Submit Complaint
           </button>
         </form>
+        <button
+          disabled={loading}
+          onClick={handleLogout}
+          className="mt-8 flex w-full justify-center items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-indigo-300"
+        >
+          {loading && <Loader2 className="w-4 h-4 animate-spin mr-2" />}
+          <LogOut className="w-4 h-4 mr-2" />
+          Logout
+        </button>
       </div>
     </div>
   );
