@@ -4,21 +4,6 @@ A full-stack web application built with **Next.js**, **MongoDB**, and **Node.js*
 
 ---
 
-## Table of Contents
-
-- [Overview](#overview)
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Setup Instructions](#setup-instructions)
-- [Usage](#usage)
-- [Email Functionality](#email-functionality)
-- [MongoDB Setup](#mongodb-setup)
-- [Deployment](#deployment)
-- [Contributing](#contributing)
-- [License](#license)
-
----
-
 ## Overview
 
 This web application allows users to submit complaints related to products, services, or support. Admins can view, update, and resolve complaints. The app sends email notifications when:
@@ -61,3 +46,12 @@ Clone the repository to your local machine:
 ```bash
 git clone https://github.com/your-username/complaint-management-app.git
 cd complaint-management-app
+```
+### 2. Install Dependencies
+Make sure you have Node.js installed. Then, run:
+```bash
+npm install
+```
+
+
+
