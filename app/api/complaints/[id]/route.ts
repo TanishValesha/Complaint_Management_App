@@ -5,8 +5,9 @@ import sendEmail from "@/utils/sendEmail";
 
 export async function GET(
   request: NextRequest,
-  response: NextResponse,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  response: NextResponse
 ) {
   await dbConnect();
   const { id } = await params;
@@ -24,8 +25,9 @@ export async function GET(
 
 export async function DELETE(
   request: NextRequest,
-  response: NextResponse,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  response: NextResponse
 ) {
   await dbConnect();
   const { id } = await params;
@@ -41,8 +43,9 @@ export async function DELETE(
 
 export async function PUT(
   request: Request,
-  response: NextResponse,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  response: NextResponse
 ) {
   try {
     await dbConnect();

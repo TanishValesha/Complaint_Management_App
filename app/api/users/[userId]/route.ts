@@ -4,8 +4,9 @@ import User from "@/models/userModel";
 
 export async function GET(
   request: NextRequest,
-  response: NextResponse,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  response: NextResponse
 ) {
   await dbConnect();
 
