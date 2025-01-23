@@ -1,160 +1,63 @@
-Complaint Management System
+# Complaint Management Application
 
-This repository contains a Complaint Management System built with Next.js, MongoDB, and Node.js. The application allows users to submit complaints, and admins to manage and resolve them. Email notifications are integrated to inform users and admins about the complaint status.
+A full-stack web application built with **Next.js**, **MongoDB**, and **Node.js** for managing complaints. Users can submit complaints, and admins can resolve them. The application includes email notifications for both the user and admin.
 
-Table of Contents
+---
 
-Setup Instructions
+## Table of Contents
 
-Application Usage
+- [Overview](#overview)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Setup Instructions](#setup-instructions)
+- [Usage](#usage)
+- [Email Functionality](#email-functionality)
+- [MongoDB Setup](#mongodb-setup)
+- [Deployment](#deployment)
+- [Contributing](#contributing)
+- [License](#license)
 
-Email Functionality
+---
 
-MongoDB Setup
+## Overview
 
-Setup Instructions
+This web application allows users to submit complaints related to products, services, or support. Admins can view, update, and resolve complaints. The app sends email notifications when:
+- A user posts a complaint.
+- An admin resolves a complaint.
 
-Prerequisites
+Built with the **Next.js** framework, **MongoDB** for data storage, and **NodeMailer** for email functionality.
 
-Node.js (v16 or higher)
+---
 
-MongoDB Atlas account or a local MongoDB instance
+## Features
 
-Steps
+- **User Registration and Authentication**: Users can sign up, log in, and manage their complaints.
+- **Complaint Submission**: Users can submit complaints, which are categorized as "Product", "Service", or "Support".
+- **Complaint Management by Admin**: Admins can view, update, and resolve complaints.
+- **Email Notifications**: Automatic emails are sent to the admin when a complaint is posted and to the user when their complaint is resolved.
+- **Responsive Design**: The app works across all devices (mobile, tablet, desktop).
+- **Secure**: User data is protected, and only authorized users can access admin features.
 
-Clone the Repository
+---
 
-git clone https://github.com/your-repo/complaint-management-system.git
-cd complaint-management-system
+## Tech Stack
 
-Install Dependencies
+- **Frontend**: Next.js, React, TailwindCSS, ShadCN
+- **Backend**: Node.js, Express.js, Next.js API Routes
+- **Database**: MongoDB (MongoDB Atlas)
+- **Authentication**: JWT (JSON Web Token)
+- **Email**: NodeMailer
+- **State Management**: Zustand, Redux (for different parts of the app)
+- **Deployment**: Vercel
 
-npm install
+---
 
-Configure Environment Variables
-Create a .env.local file in the root directory and add the following variables:
+## Setup Instructions
 
-DATABASE_URL=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<dbname>
-EMAIL_HOST=smtp.example.com
-EMAIL_PORT=587
-EMAIL_USER=your-email@example.com
-EMAIL_PASS=your-email-password
-FRONTEND_URL=http://localhost:3000
+Follow the steps below to get the application running locally.
 
-Run the Development Server
-
-npm run dev
-
-Open http://localhost:3000 in your browser to view the application.
-
-Build and Start for Production
-
-npm run build
-npm start
-
-Application Usage
-
-For Users:
-
-Submit a Complaint:
-
-Navigate to the "Submit Complaint" page.
-
-Fill out the form with details including title, description, category, and priority.
-
-Submit the form to register a complaint.
-
-View Complaint Status:
-
-Go to the "My Complaints" section.
-
-Check the status of complaints (Pending, In Progress, Resolved).
-
-For Admins:
-
-Manage Complaints:
-
-Log in as an admin.
-
-View all complaints in the "Admin Dashboard".
-
-Update complaint status or resolve them.
-
-Email Notifications:
-
-Automatic email notifications are sent to users when complaints are resolved.
-
-Email Functionality
-
-Configuring SMTP
-
-The application uses an SMTP server to send emails. You can configure the SMTP settings in the .env.local file:
-
-EMAIL_HOST=smtp.example.com
-EMAIL_PORT=587
-EMAIL_USER=your-email@example.com
-EMAIL_PASS=your-email-password
-
-How It Works
-
-When a Complaint is Resolved:
-
-The user receives an email notification about the resolution.
-
-When a Complaint is Posted:
-
-The admin receives an email about the new complaint.
-
-Using a Service Like SendGrid or Mailgun
-
-Replace EMAIL_HOST, EMAIL_PORT, EMAIL_USER, and EMAIL_PASS with the credentials provided by your email service provider.
-
-Example for SendGrid:
-
-EMAIL_HOST=smtp.sendgrid.net
-EMAIL_PORT=587
-EMAIL_USER=apikey
-EMAIL_PASS=your-sendgrid-api-key
-
-MongoDB Setup
-
-Using MongoDB Atlas
-
-Create an Account at MongoDB Atlas.
-
-Create a Cluster and set up your database.
-
-Whitelist Your IP Address:
-
-Go to "Network Access" and add your current IP address.
-
-Get Connection String:
-
-Navigate to "Database > Connect > Connect Your Application".
-
-Copy the connection string and update the DATABASE_URL in your .env.local file:
-
-DATABASE_URL=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<dbname>
-
-Using a Local MongoDB Instance
-
-Install MongoDB:
-
-Follow the installation guide.
-
-Run MongoDB Locally:
-
-mongod
-
-Update the Connection String:
-
-DATABASE_URL=mongodb://localhost:27017/<dbname>
-
-Additional Notes
-
-Ensure all dependencies and environment variables are correctly set up before running the application.
-
-Check the logs (Vercel Logs or console.log) if you encounter errors.
-
-Feel free to open issues or contribute to this project!
-
+### 1. Clone the Repository
+Clone the repository to your local machine:
+```bash
+git clone https://github.com/your-username/complaint-management-app.git
+cd complaint-management-app
